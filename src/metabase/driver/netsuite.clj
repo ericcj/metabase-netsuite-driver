@@ -42,8 +42,3 @@
     (-> (merge spec details)
         (dissoc :host :port :account-id :role-id)
         (finish-fn host port account-id role-id))))
-
-(defmethod driver/can-connect? :netsuite
-  [driver details]
-  (sql-jdbc.conn/can-connect? driver details))
-
