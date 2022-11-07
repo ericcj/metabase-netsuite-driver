@@ -1,0 +1,41 @@
+info:
+  name: Metabase Netsuite Driver
+  version: 1.0.0-SNAPSHOT
+  description: Allows Metabase to connect to Netsuite databases.
+dependencies:
+  - class: com.netsuite.jdbc.openaccess.OpenAccessDriver
+    message: >
+      Metabase requires the Netsuite JDBC driver in order to connect to Netsuite databases, but we can't ship it as part
+      of Metabase due to licensing restrictions. See
+      https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_3994742720.html for more details.
+driver:
+  name: netsuite
+  display-name: Netsuite
+  lazy-load: true
+  parent: oracle
+  connection-properties:
+    - host
+    - merge:
+        - port
+        - default: 1708
+    - name: account-id
+      display-name: Netsuite Account ID
+    - name: role-id
+      display-name: Netsuite Role Id
+    - user
+    - password
+    - cloud-ip-address-info
+    - advanced-options-start
+    - name: additional-options
+      display-name: Additional JDBC options
+      placeholder: StaticSchema=1
+      required: false
+      visible-if:
+        advanced-options: true
+    - default-advanced-options
+  connection-properties-include-tunnel-config: true
+init:
+  - step: load-namespace
+    namespace: metabase.driver.netsuite
+  - step: register-jdbc-driver
+    class: com.netsuite.jdbc.openaccess.OpenAccessDriver

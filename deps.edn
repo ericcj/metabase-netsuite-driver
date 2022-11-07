@@ -1,0 +1,29 @@
+{:paths
+ ["src" "resources"]
+
+ ; Old version may have previously been publicly available but doesn't seem to be there anymore:
+ ; :mvn/repos
+ ; {"Mulesoft" {:url "https://repository.mulesoft.org/nexus/content/repositories/public/"}}
+ ; :deps
+ ; {com.netsuite.jdbc/NQjc {:mvn/version "7.20.50-atlassian-1"}}
+
+ ; Developed with 8.10.136.0 from https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_3994742720.html
+ :deps
+  {com.netsuite.jdbc/NQjc {:local/root "../NetSuiteJDBCDrivers/NQjc.jar"}}
+
+ :aliases
+ {:oss
+  ;; JDBC driver isn't GPL-compatible
+  {:replace-deps  {}
+   :replace-paths ["src" "resources"]}
+
+ ;; build the driver with clojure -X:build
+  :build
+  ;; to avoid hardcoding these paths in the project-level deps file, an alias pointing to these extra-deps can be defined in user-specific ~/.clojure/deps.edn
+  ;; files instead; suppose we do so, and call it :metabase-core-deps, then we can simply add :metabase-core-deps to the build invocation above	
+  {:extra-deps {metabase/metabase-core {:local/root "../metabase"}
+                metabase/build-drivers {:local/root "../metabase/bin/build-drivers"}}
+   :exec-fn    build-drivers.build-driver/build-driver!
+   :exec-args  {:driver      :netsuite
+                :project-dir "."
+                :target-dir  "./target"}}}}
