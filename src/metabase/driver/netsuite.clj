@@ -26,6 +26,15 @@
 
 (driver/register! :netsuite, :parent :oracle)
 
+(def ^:private database-type->base-type
+  (sql-jdbc.sync/pattern-based-database-type->base-type
+   [[#"BIGINT"     :type/BigInteger]]))
+
+(defmethod sql-jdbc.sync/database-type->base-type :netsuite
+  [driver column-type]
+  (or (database-type->base-type column-type)
+      ((get-method sql-jdbc.sync/database-type->base-type :oracle) driver column-type)))
+
 (defn- netsuite-spec [details spec host port account-id role-id]
   (-> (assoc spec :subname (str "//" host
                             ":" port
