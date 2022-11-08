@@ -51,3 +51,11 @@
     (-> (merge spec details)
         (dissoc :host :port :account-id :role-id)
         (finish-fn host port account-id role-id))))
+
+; Hack since SuiteQL doesn't allow quoting of any kind around aliases.
+; Ideally we'd extend quote-style to support :none or something which then passed :quoted false to hsql/format instead of always passing :quoting as we do now: https://github.com/seancorfield/honeysql#entity-names
+(defmethod driver/mbql->native :netsuite
+  [driver outer-query]
+  (let [parent-method (get-method driver/mbql->native :oracle)
+        compiled      (parent-method driver outer-query)]
+    (assoc compiled :query (str/replace (compiled :query) #" AS \"([^\"]+)\"" " AS $1"))))

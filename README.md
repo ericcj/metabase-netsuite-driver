@@ -1,6 +1,12 @@
-All you need you do is drop the driver and netsuite JDBC NQjc.jar in your `/path/to/metabase/plugins/` directory.
+# Installation
 
-## Building the driver
+All you need you do is drop the netsuite.metabase-driver.jar (from the Assets of the latest release https://github.com/ericcj/metabase-netsuite-driver/releases/), netsuite JDBC NQjc.jar from https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_3994742720.html and oracle ojdbc8.jar (see https://www.metabase.com/docs/latest/databases/connections/oracle even if though it's unused just because we inherit that driver) in your `/path/to/metabase/plugins/` directory.
+
+# Why
+
+https://github.com/metabase/metabase/issues/26251
+
+# Building the driver
 
 ## Prereq: Install the Clojure CLI
 
@@ -10,7 +16,7 @@ newer version.
 
 ## Prereq: Download JDBC jar
 
-You need \~/NetSuiteJDBCDrivers/NQjc.jar from https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_3994742720.html but also the oracle one even if though it's unused just because we inherit that driver
+You need \~/NetSuiteJDBCDrivers/NQjc.jar from above
 
 ## Prereq: Configure paths in `~/.clojure/deps.edn`
 
