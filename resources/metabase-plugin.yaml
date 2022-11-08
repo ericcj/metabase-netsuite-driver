@@ -26,7 +26,7 @@ driver:
     - password
     - cloud-ip-address-info
     - advanced-options-start
-    - name: additional-options
+    - name: additional-options # https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_4425626714.html
       display-name: Additional JDBC options
       placeholder: StaticSchema=1
       required: false
