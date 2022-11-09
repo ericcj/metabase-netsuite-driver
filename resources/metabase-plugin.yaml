@@ -3,6 +3,7 @@ info:
   version: 1.0.0-SNAPSHOT
   description: Allows Metabase to connect to Netsuite databases.
 dependencies:
+  - plugin: Metabase Oracle Driver
   - class: com.netsuite.jdbc.openaccess.OpenAccessDriver
     message: >
       Metabase requires the Netsuite JDBC driver in order to connect to Netsuite databases, but we can't ship it as part
