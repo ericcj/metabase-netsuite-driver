@@ -52,6 +52,11 @@
         (dissoc :host :port :account-id :role-id)
         (finish-fn host port account-id role-id))))
 
+; not sure why the oracle driver customizes this but their custom one worked in a dev metabase but not a prod one for me
+(defmethod driver/can-connect? :netsuite
+  [driver details]
+  ((get-method driver/can-connect? :sql-jdbc) driver details))
+
 ; TIMESTAMP columns (e.g. item.createddate) were causing "Receiver class com.netsuite.jdbc.oabase.oacb does not define or inherit an implementation of the resolved method 'abstract java.lang.Object getObject(int, java.lang.Class)' of interface java.sql.ResultSet"
 ; maybe this is a similar concern to how the oracle driver handles TIMESTAMPTZ?
 (defmethod sql-jdbc.execute/read-column-thunk [:netsuite Types/TIMESTAMP]
