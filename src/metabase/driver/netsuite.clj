@@ -57,6 +57,9 @@
   [driver details]
   ((get-method driver/can-connect? :sql-jdbc) driver details))
 
+; netsuite doesn't appear to allow you to change your session time zone and even reading it as per https://timdietrich.me/blog/netsuite-suiteql-dates-times/ doesn't work over JDBC 
+(defmethod sql-jdbc.execute/set-timezone-sql :netsuite [_] nil)
+
 ; TIMESTAMP columns (e.g. item.createddate) were causing "Receiver class com.netsuite.jdbc.oabase.oacb does not define or inherit an implementation of the resolved method 'abstract java.lang.Object getObject(int, java.lang.Class)' of interface java.sql.ResultSet"
 ; maybe this is a similar concern to how the oracle driver handles TIMESTAMPTZ?
 (defmethod sql-jdbc.execute/read-column-thunk [:netsuite Types/TIMESTAMP]
