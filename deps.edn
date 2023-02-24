@@ -11,6 +11,13 @@
  :deps
   {com.netsuite.jdbc/NQjc {:local/root "../NetSuiteJDBCDrivers/NQjc.jar"}}
 
+  ; copied from https://github.com/metabase/metabase/blob/master/deps.edn#L174 to fix Error building classpath. Could not find artifact org.opensaml:opensaml-core:jar:4.2.0 in central (https://repo1.maven.org/maven2/)
+ :mvn/repos
+ {"athena"   {:url "https://s3.amazonaws.com/maven-athena"}
+  "redshift" {:url "https://s3.amazonaws.com/redshift-maven-repository/release"}
+  ;; for metabase/saml20-clj
+  "opensaml" {:url "https://build.shibboleth.net/nexus/content/repositories/releases/"}}
+
  :aliases
  {:oss
   ;; JDBC driver isn't GPL-compatible
