@@ -75,4 +75,4 @@
   [driver outer-query]
   (let [parent-method (get-method driver/mbql->native :oracle)
         compiled      (parent-method driver outer-query)]
-    (assoc compiled :query (str/replace (str/replace (compiled :query) #" AS \"(?!(?:order|group)\")([^\"]+)\"" " AS $1") #"\"(?!(?:order|group)\")([^\"]+)\" AS " "$1 AS "))))
+    (assoc compiled :query (str/replace (str/replace (compiled :query) #" AS \"(?!(?:order|group|to)\")([^\"]+)\"" " AS $1") #"\"(?!(?:order|group|to)\")([^\"]+)\" AS " "$1 AS "))))
