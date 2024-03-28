@@ -2,8 +2,6 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [honeysql.core :as hsql]
-            [honeysql.format :as hformat]
             [java-time :as t]
             [metabase.config :as config]
             [metabase.driver :as driver]
@@ -16,10 +14,7 @@
             [metabase.driver.sql-jdbc.sync :as sql-jdbc.sync]
             [metabase.driver.sql.query-processor :as sql.qp]
             [metabase.driver.sql.util :as sql.u]
-            [metabase.driver.sql.util.unprepare :as unprepare]
-            [metabase.models.secret :as secret]
             [metabase.util :as u]
-            [metabase.util.honeysql-extensions :as hx]
             [metabase.util.i18n :refer [trs]])
   (:import [java.sql Connection ResultSet Types]
            [java.time Instant OffsetDateTime ZonedDateTime]))
