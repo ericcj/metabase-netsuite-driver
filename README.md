@@ -24,8 +24,25 @@ See https://github.com/metabase/sudoku-driver/blob/master/README.md#hacking-on-t
 
 ## Build it
 
+
 ```sh
-clojure -X:build :project-dir "\"$(pwd)\""
+# Example for building the driver with bash or similar
+
+# switch to the local checkout of the Metabase repo
+cd /path/to/metabase/repo
+
+# to create metabase/resources/modules/oracle.metabase-driver.jar
+bin/build-drivers.sh
+
+# get absolute path to the driver project directory
+DRIVER_PATH=`readlink -f ~/metabase-netsuite-driver`
+
+# Build driver. See explanation at https://github.com/metabase/sudoku-driver/blob/master/README.md#build-it-updated-for-build-script-changes-in-metabase-0460
+clojure \
+  -Sdeps "{:aliases {:netsuite {:extra-deps {com.metabase/netsuite-driver {:local/root \"$DRIVER_PATH\"}}}}}"  \
+  -X:build:netsuite \
+  build-drivers.build-driver/build-driver! \
+  "{:driver :netsuite, :project-dir \"$DRIVER_PATH\", :target-dir \"$DRIVER_PATH/target\"}"
 ```
 
 will create `target/netsuite.metabase-driver.jar`. Copy this file and NQjc.jar to `/path/to/metabase/plugins/` and restart your

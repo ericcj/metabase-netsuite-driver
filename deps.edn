@@ -9,12 +9,14 @@
 
  ; Developed with 8.10.136.0 from https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_3994742720.html
  :deps
-  {com.netsuite.jdbc/NQjc {:local/root "../NetSuiteJDBCDrivers/NQjc.jar"}}
+  {com.oracle.database.jdbc/ojdbc8 {:mvn/version "23.3.0.23.09"}
+  	com.netsuite.jdbc/NQjc {:local/root "../NetSuiteJDBCDrivers/NQjc.jar"}
+   metabase/oracle-driver {:local/root "../metabase/resources/modules/oracle.metabase-driver.jar"}
+}
 
   ; copied from https://github.com/metabase/metabase/blob/master/deps.edn#L174 to fix Error building classpath. Could not find artifact org.opensaml:opensaml-core:jar:4.2.0 in central (https://repo1.maven.org/maven2/)
  :mvn/repos
- {"athena"   {:url "https://s3.amazonaws.com/maven-athena"}
-  "redshift" {:url "https://s3.amazonaws.com/redshift-maven-repository/release"}
+ {
   ;; for metabase/saml20-clj
   "opensaml" {:url "https://build.shibboleth.net/nexus/content/repositories/releases/"}}
 
@@ -23,14 +25,5 @@
   ;; JDBC driver isn't GPL-compatible
   {:replace-deps  {}
    :replace-paths ["src" "resources"]}
-
- ;; build the driver with clojure -X:build
-  :build
-  ;; to avoid hardcoding these paths in the project-level deps file, an alias pointing to these extra-deps can be defined in user-specific ~/.clojure/deps.edn
-  ;; files instead; suppose we do so, and call it :metabase-core-deps, then we can simply add :metabase-core-deps to the build invocation above	
-  {:extra-deps {metabase/metabase-core {:local/root "../metabase"}
-                metabase/build-drivers {:local/root "../metabase/bin/build-drivers"}}
-   :exec-fn    build-drivers.build-driver/build-driver!
-   :exec-args  {:driver      :netsuite
-                :project-dir "."
-                :target-dir  "./target"}}}}
+  }
+}
