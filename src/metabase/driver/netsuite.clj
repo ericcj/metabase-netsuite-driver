@@ -3,7 +3,6 @@
             [clojure.string :as str]
             [clojure.tools.logging :as log]
             [java-time :as t]
-            [metabase.config :as config]
             [metabase.driver :as driver]
             [metabase.driver.common :as driver.common]
             [metabase.driver.impl :as driver.impl]
