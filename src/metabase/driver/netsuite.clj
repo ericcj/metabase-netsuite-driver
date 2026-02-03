@@ -46,6 +46,12 @@
         (dissoc :host :port :account-id :role-id)
         (finish-fn host port account-id role-id))))
 
+(defmethod sql-jdbc.conn/data-warehouse-connection-pool-properties :netsuite
+  [driver database]
+  (merge
+   ((get-method sql-jdbc.conn/data-warehouse-connection-pool-properties :sql-jdbc) driver database)
+   {"cancelAutomaticallyClosedStatements" true}))
+
 ; not sure why the oracle driver customizes this but their custom one worked in a dev metabase but not a prod one for me
 (defmethod driver/can-connect? :netsuite
   [driver details]
