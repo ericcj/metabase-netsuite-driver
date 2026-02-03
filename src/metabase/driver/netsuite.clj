@@ -5,7 +5,6 @@
             [java-time :as t]
             [metabase.driver :as driver]
             [metabase.driver.common :as driver.common]
-            [metabase.driver.settings :as driver.settings]
             [metabase.driver.impl :as driver.impl]
             [metabase.driver.sql :as sql]
             [metabase.driver.sql-jdbc.common :as sql-jdbc.common]
@@ -34,7 +33,7 @@
   (-> (assoc spec :subname (str "//" host
                             ":" port
                             ";ServerDataSource=NetSuite2.com;encrypted=1;CustomProperties=(AccountID=" account-id
-                            ";RoleID=" role-id ");NegotiateSSLClose=false;TCPKeepAlive=true"))
+                            ";RoleID=" role-id ");NegotiateSSLClose=false"))
       (sql-jdbc.common/handle-additional-options details)))
 
 (defmethod sql-jdbc.conn/connection-details->spec :netsuite
@@ -51,16 +50,6 @@
 (defmethod driver/can-connect? :netsuite
   [driver details]
   ((get-method driver/can-connect? :sql-jdbc) driver details))
-
-(defmethod sql-jdbc.execute/prepared-statement :netsuite
-  [driver ^Connection conn ^String sql params]
-  (doto ((get-method sql-jdbc.execute/prepared-statement :oracle) driver conn sql params)
-    (.setQueryTimeout (/ (+ driver.settings/*query-timeout-ms* 2000) 1000))))
-
-(defmethod sql-jdbc.execute/statement :netsuite
-  [driver ^Connection conn]
-  (doto ((get-method sql-jdbc.execute/statement :oracle) driver conn)
-    (.setQueryTimeout (/ (+ driver.settings/*query-timeout-ms* 2000) 1000))))
 
 ; netsuite doesn't appear to allow you to change your session time zone and even reading it as per https://timdietrich.me/blog/netsuite-suiteql-dates-times/ doesn't work over JDBC 
 (defmethod sql-jdbc.execute/set-timezone-sql :netsuite [_] nil)
